@@ -1,0 +1,23 @@
+ion-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 24px;
+  background: #ffffff;
+  text-align: center;
+}
+
+h1 {
+  font-size: 2rem;
+  margin-bottom: 16px;
+  font-weight: bold;
+}
+
+ion-button {
+  margin: 12px 0;
+  width: 100%;
+  max-width: 280px;
+  font-size: 1.1rem;
+  --border-radius: 12px;
+}

@@ -1,0 +1,81 @@
+<ion-content class="ion-padding login-content">
+  <div class="login-container">
+    <!-- Title -->
+    <h1 class="main-title">{{ activeTab === 'login' ? 'Login' : 'Register' }}</h1>
+    
+    <!-- Tab buttons -->
+    <div class="tab-container">
+      <button 
+        class="tab-button" 
+        [class.active]="activeTab === 'login'"
+        (click)="setActiveTab('login')">Login</button>
+      <button 
+        class="tab-button" 
+        [class.active]="activeTab === 'register'"
+        (click)="setActiveTab('register')">Register</button>
+    </div>
+    
+    <!-- Login Form -->
+    <div class="form-container" *ngIf="activeTab === 'login'">
+      <!-- Email Input -->
+      <div class="input-container">
+        <ion-icon name="mail-outline" class="input-icon"></ion-icon>
+        <input type="email" placeholder="Email" [(ngModel)]="email" class="custom-input">
+      </div>
+      
+      <!-- Password Input -->
+      <div class="input-container">
+        <ion-icon name="lock-closed-outline" class="input-icon"></ion-icon>
+        <input type="password" placeholder="Password" [(ngModel)]="password" class="custom-input">
+      </div>
+      
+      <!-- Remember Me & Forgot Password -->
+      <div class="options-row">
+        <label class="remember-me">
+          <input type="checkbox" [(ngModel)]="rememberMe">
+          <span class="checkmark"></span>
+          Remember Me
+        </label>
+        <a href="#" class="forgot-link" (click)="forgotPassword()">Forgot password?</a>
+      </div>
+      
+      <!-- Login Button -->
+      <ion-button expand="block" class="login-button" (click)="login()">
+        Login
+      </ion-button>
+    </div>
+
+    <!-- Register Form -->
+    <div class="form-container" *ngIf="activeTab === 'register'">
+      <!-- Email Input -->
+      <div class="input-container">
+        <ion-icon name="mail-outline" class="input-icon"></ion-icon>
+        <input type="email" placeholder="Email" [(ngModel)]="registerEmail" class="custom-input">
+      </div>
+      
+      <!-- Password Input -->
+      <div class="input-container">
+        <ion-icon name="lock-closed-outline" class="input-icon"></ion-icon>
+        <input type="password" placeholder="Password" [(ngModel)]="registerPassword" class="custom-input">
+      </div>
+      
+      <!-- Confirm Password Input -->
+      <div class="input-container">
+        <ion-icon name="lock-closed-outline" class="input-icon"></ion-icon>
+        <input type="password" placeholder="Confirm Password" [(ngModel)]="confirmPassword" class="custom-input">
+      </div>
+      
+      <!-- Register Button -->
+      <ion-button expand="block" class="login-button" (click)="register()">
+        Register
+      </ion-button>
+    </div>
+    
+    <!-- Character Illustration -->
+    <div class="character-container">
+      <div class="character-illustration">
+        <img src="../../../assets/loginhurley.svg" alt="ScoreFactor Character" class="character-image">
+      </div>
+    </div>
+  </div>
+</ion-content>

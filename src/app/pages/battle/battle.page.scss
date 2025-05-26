@@ -1,0 +1,48 @@
+ion-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 24px;
+  text-align: center;
+  background: #f5f7fa;
+  height: 100%;
+}
+
+h2 {
+  font-size: 2rem;
+  margin-bottom: 16px;
+  font-weight: bold;
+}
+
+.timer {
+  font-size: 3rem;
+  font-weight: bold;
+  color: #1e90ff;
+  margin: 16px 0;
+}
+
+ion-button {
+  margin: 12px 0;
+  width: 100%;
+  max-width: 300px;
+  font-size: 1.2rem;
+  --padding-start: 24px;
+  --padding-end: 24px;
+  --border-radius: 12px;
+}
+
+ion-button.player1 {
+  --background: #4caf50;
+}
+
+ion-button.player2 {
+  --background: #f44336;
+}
+
+.result {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #333;
+  margin: 16px 0;
+}

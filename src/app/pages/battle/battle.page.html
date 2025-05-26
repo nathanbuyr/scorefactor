@@ -1,0 +1,30 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Battle</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <!-- Start Screen -->
+  <div *ngIf="!hasStarted && !battleOver">
+    <h2>Ready to Battle?</h2>
+    <ion-button expand="block" color="primary" (click)="startBattle()">Start Battle</ion-button>
+  </div>
+
+  <!-- Battle Screen -->
+  <div *ngIf="hasStarted && !battleOver">
+    <div class="timer">{{ timer }}s</div>
+    <ion-button class="player1" (click)="addScore(1)">Player 1 Score: {{ player1Score }}</ion-button>
+    <ion-button class="player2" (click)="addScore(2)">Player 2 Score: {{ player2Score }}</ion-button>
+  </div>
+
+  <!-- End Screen -->
+  <div *ngIf="battleOver">
+    <h2>Battle Over!</h2>
+    <div class="result">{{ getWinner() }}</div>
+    <ion-button color="medium" (click)="resetBattle()">Back to Start</ion-button>
+    <ion-button color="success" (click)="startBattle()">Battle Again</ion-button>
+  </div>
+
+</ion-content>

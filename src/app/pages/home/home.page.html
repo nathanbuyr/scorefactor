@@ -1,0 +1,15 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>ScoreFactor</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <ion-button expand="block" (click)="connectBluetooth()">
+    {{ connected ? 'Connected' : 'Connect to Bluetooth Device' }}
+  </ion-button>
+
+  <ion-button expand="block" color="success" (click)="startBattle()">
+    Start Battle
+  </ion-button>
+</ion-content>

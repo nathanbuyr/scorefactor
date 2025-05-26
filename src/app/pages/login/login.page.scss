@@ -1,0 +1,164 @@
+/* login.page.scss */
+.login-content {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  background: white;
+  min-height: 100vh;
+  padding-top: 2rem;
+}
+
+.login-container {
+  width: 100%;
+  max-width: 350px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.main-title {
+  font-size: 2rem;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.tab-container {
+  display: flex;
+  margin-bottom: 2rem;
+  border-bottom: 1px solid #e0e0e0;
+  width: 100%;
+}
+
+.tab-button {
+  flex: 1;
+  padding: 1rem;
+  background: none;
+  border: none;
+  font-size: 1rem;
+  color: #666;
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  transition: all 0.3s ease;
+  
+  &.active {
+    color: #333;
+    border-bottom-color: #007bff;
+    font-weight: 600;
+  }
+}
+
+.form-container {
+  width: 100%;
+  margin-bottom: 3rem;
+}
+
+.input-container {
+  position: relative;
+  margin-bottom: 1rem;
+}
+
+.input-icon {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #666;
+  font-size: 1.2rem;
+  z-index: 2;
+}
+
+.custom-input {
+  width: 100%;
+  padding: 12px 40px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 1rem;
+  background: black;
+  box-sizing: border-box;
+  
+  &:focus {
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+  }
+  
+  &::placeholder {
+    color: #999;
+  }
+}
+
+.options-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  font-size: 0.9rem;
+}
+
+.remember-me {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  color: #666;
+  
+  input[type="checkbox"] {
+    margin-right: 8px;
+    accent-color: #007bff;
+  }
+}
+
+.forgot-link {
+  color: #007bff;
+  text-decoration: none;
+  
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.login-button {
+  --background: #007bff;
+  --background-activated: #0056b3;
+  --border-radius: 8px;
+  height: 48px;
+  font-weight: 600;
+  margin-top: 0.5rem;
+}
+
+.character-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 2rem;
+}
+
+.character-illustration {
+  opacity: 0.8;
+  animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+// Responsive adjustments
+@media (max-height: 700px) {
+  .login-content {
+    padding-top: 1rem;
+  }
+  
+  .character-container {
+    margin-top: 1rem;
+  }
+  
+  .character-illustration svg {
+    width: 80px;
+    height: 100px;
+  }
+}
