@@ -1,6 +1,35 @@
 import { Injectable } from '@angular/core';
 import { createClient, SupabaseClient, User, Session } from '@supabase/supabase-js';
 import { environment } from '../../environments/environment';
+import { Capacitor } from '@capacitor/core';
+import { Preferences } from '@capacitor/preferences';
+
+// Custom storage adapter for Capacitor
+class CapacitorStorage {
+  async getItem(key: string): Promise<string | null> {
+    if (Capacitor.isNativePlatform()) {
+      const { value } = await Preferences.get({ key });
+      return value;
+    }
+    return localStorage.getItem(key);
+  }
+
+  async setItem(key: string, value: string): Promise<void> {
+    if (Capacitor.isNativePlatform()) {
+      await Preferences.set({ key, value });
+    } else {
+      localStorage.setItem(key, value);
+    }
+  }
+
+  async removeItem(key: string): Promise<void> {
+    if (Capacitor.isNativePlatform()) {
+      await Preferences.remove({ key });
+    } else {
+      localStorage.removeItem(key);
+    }
+  }
+}
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +40,20 @@ export class SupabaseService {
   constructor() {
     this.supabase = createClient(
       environment.supabaseUrl,
-      environment.supabaseAnonKey
+      environment.supabaseAnonKey,
+      {
+        auth: {
+          storage: new CapacitorStorage(),
+          autoRefreshToken: true,
+          persistSession: true,
+          detectSessionInUrl: !Capacitor.isNativePlatform(),
+          // Provide a no-op lock function instead of false
+          lock: async (name: string, acquireTimeout: number, fn: () => Promise<any>) => {
+            // Just execute the function without locking
+            return await fn();
+          }
+        }
+      }
     );
   }
 

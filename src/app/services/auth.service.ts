@@ -3,7 +3,6 @@ import { Router } from '@angular/router';
 import { BehaviorSubject } from 'rxjs';
 import { SupabaseService } from './supabase.service';
 import { User, Session } from '@supabase/supabase-js';
-import { AlertController, LoadingController } from '@ionic/angular';
 
 @Injectable({
   providedIn: 'root'
@@ -14,9 +13,7 @@ export class AuthService {
 
   constructor(
     private supabase: SupabaseService,
-    private router: Router,
-    private alertController: AlertController,
-    private loadingController: LoadingController
+    private router: Router
   ) {
     // Listen for auth state changes
     this.supabase.onAuthStateChange((event, session) => {
@@ -26,7 +23,7 @@ export class AuthService {
         this.currentUserSubject.next(null);
       }
     });
-
+    
     // Check for existing session on app start
     this.checkUser();
   }
@@ -43,58 +40,57 @@ export class AuthService {
   }
 
   async signIn(email: string, password: string): Promise<boolean> {
-    const loading = await this.loadingController.create({
-      message: 'Signing in...'
-    });
-    await loading.present();
-
+    console.log('AuthService.signIn called with:', email);
+    
     try {
+      console.log('Calling supabase.signIn...');
       const { data, error } = await this.supabase.signIn(email, password);
-      
+      console.log('Supabase response received:', { data: !!data, error: !!error });
+     
       if (error) {
-        await this.showAlert('Sign In Error', error.message);
+        console.log('Supabase error:', error.message);
+        this.showSimpleAlert('Sign In Error', error.message);
         return false;
       }
-
+      
       if (data.user) {
+        console.log('User authenticated successfully');
         this.currentUserSubject.next(data.user);
-        this.router.navigate(['/home']); // Navigate to your main page
+        console.log('Navigating to /home...');
+        await this.router.navigate(['/home']);
         return true;
       }
-      
+     
+      console.log('No user returned from Supabase');
       return false;
     } catch (error: any) {
-      await this.showAlert('Error', error.message);
+      console.error('Exception in signIn:', error);
+      this.showSimpleAlert('Error', error.message);
       return false;
-    } finally {
-      await loading.dismiss();
     }
   }
 
   async signUp(email: string, password: string): Promise<boolean> {
-    const loading = await this.loadingController.create({
-      message: 'Creating account...'
-    });
-    await loading.present();
-
+    console.log('Creating account...');
+    
     try {
       const { data, error } = await this.supabase.signUp(email, password);
-      
+     
       if (error) {
-        await this.showAlert('Sign Up Error', error.message);
+        console.log('Sign Up Error:', error.message);
+        this.showSimpleAlert('Sign Up Error', error.message);
         return false;
       }
-
-      await this.showAlert(
-        'Success', 
+      
+      this.showSimpleAlert(
+        'Success',
         'Account created! Please check your email to verify your account.'
       );
       return true;
     } catch (error: any) {
-      await this.showAlert('Error', error.message);
+      console.error('Sign up error:', error);
+      this.showSimpleAlert('Error', error.message);
       return false;
-    } finally {
-      await loading.dismiss();
     }
   }
 
@@ -111,30 +107,32 @@ export class AuthService {
   async resetPassword(email: string): Promise<boolean> {
     try {
       const { error } = await this.supabase.resetPassword(email);
-      
+     
       if (error) {
-        await this.showAlert('Reset Password Error', error.message);
+        console.log('Reset Password Error:', error.message);
+        this.showSimpleAlert('Reset Password Error', error.message);
         return false;
       }
-
-      await this.showAlert(
-        'Password Reset', 
+      
+      this.showSimpleAlert(
+        'Password Reset',
         'Check your email for password reset instructions.'
       );
       return true;
     } catch (error: any) {
-      await this.showAlert('Error', error.message);
+      console.error('Reset password error:', error);
+      this.showSimpleAlert('Error', error.message);
       return false;
     }
   }
 
-  private async showAlert(header: string, message: string) {
-    const alert = await this.alertController.create({
-      header,
-      message,
-      buttons: ['OK']
-    });
-    await alert.present();
+  private showSimpleAlert(title: string, message: string) {
+
+    if (typeof window !== 'undefined') {
+      alert(`${title}: ${message}`);
+    }
+    // Also log to console for debugging
+    console.log(`${title}: ${message}`);
   }
 
   get isLoggedIn(): boolean {

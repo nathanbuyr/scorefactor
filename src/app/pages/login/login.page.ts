@@ -1,9 +1,11 @@
 import { Component } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
-import { IonContent, IonIcon, IonButton } from "@ionic/angular/standalone";
+import { IonContent, IonIcon, IonButton, ToastController } from "@ionic/angular/standalone";
 import { NgIf } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-
+import { addIcons } from 'ionicons';
+import { personCircleOutline, lockClosedOutline, mailOutline, checkmarkCircleOutline } from 'ionicons/icons';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -24,7 +26,14 @@ export class LoginPage {
   
   activeTab: string = 'login';
 
-  constructor(private authService: AuthService) { }
+  constructor(private authService: AuthService, private router: Router) { 
+    addIcons({
+  personCircleOutline,
+  lockClosedOutline,
+  mailOutline,
+  checkmarkCircleOutline
+});
+  }
 
   setActiveTab(tab: string) {
     this.activeTab = tab;
@@ -45,18 +54,30 @@ export class LoginPage {
   }
 
   async login() {
-    if (this.email && this.password) {
-      console.log('Login attempt:', {
-        email: this.email,
-        password: this.password,
-        rememberMe: this.rememberMe
-      });
-      await this.authService.signIn(this.email, this.password);
-    } else {
-      console.log('Please fill in all fields');
-      // You can add toast notification here
+  console.log('Login method called');
+  
+  if (this.email && this.password) {
+    console.log('Email and password provided, attempting login...');
+    
+    try {
+      console.log('Calling authService.signIn...');
+      const result = await this.authService.signIn(this.email, this.password);
+      console.log('AuthService response:', result);
+      
+      if (result) {
+        console.log('Login successful, navigating...');
+        await this.router.navigate(['/home']);
+        console.log('Navigation complete');
+      } else {
+        console.error('Login failed');
+      }
+    } catch (error) {
+      console.error('Login exception:', error);
     }
+  } else {
+    console.log('Missing email or password');
   }
+}
 
   async register() {
     // Validation
@@ -95,4 +116,9 @@ export class LoginPage {
       console.log('Please enter your email first');
     }
   }
+
+  testButton() {
+  console.log('Test button clicked - this should appear in remote debugging');
+  alert('Test button works!'); // Simple browser alert
+}
 }

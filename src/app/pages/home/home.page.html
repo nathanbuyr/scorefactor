@@ -13,20 +13,21 @@
   <div class="home-container">
     
     <!-- ESP32 Connection Status -->
-    <div class="connection-section">
-      <div class="connection-status" [class.connected]="isConnected">
-        <span class="status-text">
-          {{ isConnected ? 'Device connected!' : 'Device not connected:' }}
-        </span>
-        <ion-button 
-          size="small" 
-          class="connect-button"
-          [color]="isConnected ? 'success' : 'primary'"
-          (click)="toggleConnection()">
-          {{ isConnected ? 'Connected' : 'Connect' }}
-        </ion-button>
-      </div>
-    </div>
+<div class="connection-section">
+  <div class="connection-status" [class.connected]="isConnected">
+    <span class="status-text">
+      {{ isConnected ? 'Connected to: ' + connectedDevice?.name : 'Device not connected' }}
+    </span>
+    <ion-button
+      size="small"
+      class="connect-button"
+      [color]="isConnected ? 'success' : 'primary'"
+      (click)="toggleConnection()">
+      <ion-icon name="bluetooth" slot="start"></ion-icon>
+      {{ isConnected ? 'Disconnect' : 'Connect' }}
+    </ion-button>
+  </div>
+</div>
 
     <!-- Main Action Cards -->
     <div class="cards-container">
