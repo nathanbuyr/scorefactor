@@ -1,23 +1,191 @@
-ion-content {
+.home-content {
+  --background: #f5f5f5;
+}
+
+.header-title {
+  font-weight: 600;
+  font-size: 1.2rem;
+}
+
+.home-container {
+  padding: 1rem;
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+.connection-section {
+  margin-bottom: 1.5rem;
+}
+
+.connection-status {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #ffebee;
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  border-left: 4px solid #f44336;
+  
+  &.connected {
+    background: #e8f5e8;
+    border-left-color: #4caf50;
+  }
+}
+
+.status-text {
+  font-size: 0.9rem;
+  color: #333;
+  font-weight: 500;
+}
+
+.connect-button {
+  --padding-start: 1rem;
+  --padding-end: 1rem;
+  height: 32px;
+  font-size: 0.8rem;
+}
+
+.cards-container {
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  gap: 1rem;
+}
+
+.card {
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  transition: transform 0.2s ease;
+  
+  &:active {
+    transform: scale(0.98);
+  }
+}
+
+.battle-card {
+  background: linear-gradient(135deg, #ffd54f, #ffb74d);
+  padding: 1.5rem;
+  min-height: 120px;
+  
+  .card-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 100%;
+  }
+  
+  .card-text {
+    flex: 1;
+    
+    h2 {
+      margin: 0 0 1rem 0;
+      font-size: 1.3rem;
+      font-weight: 600;
+      color: #333;
+    }
+  }
+  
+  .card-image {
+    flex-shrink: 0;
+    margin-left: 1rem;
+    
+    .battle-image {
+      width: 200px;
+      height: 200px;
+      object-fit: contain;
+    }
+  }
+  
+  .action-button {
+    --background: #9c27b0;
+    --color: white;
+    height: 36px;
+    font-weight: 600;
+  }
+}
+
+.bottom-cards {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.leaderboard-card {
+  background: linear-gradient(135deg, #9c27b0, #7b1fa2);
+  color: white;
+  padding: 1.5rem;
+  min-height: 120px;
+}
+
+.stats-card {
+  background: linear-gradient(135deg, #ffd54f, #ffb74d);
+  color: #333;
+  padding: 1.5rem;
+  min-height: 120px;
+}
+
+.solo-card {
+  background: linear-gradient(135deg, #81c784, #66bb6a);
+  color: white;
+  padding: 1.5rem;
+  min-height: 80px;
+}
+
+.card-content.centered {
+  display: flex;
+  flex-direction: column;
   align-items: center;
-  padding: 24px;
-  background: #ffffff;
+  justify-content: center;
   text-align: center;
+  height: 100%;
 }
 
-h1 {
+.card-icon {
   font-size: 2rem;
-  margin-bottom: 16px;
-  font-weight: bold;
+  margin-bottom: 0.5rem;
 }
 
-ion-button {
-  margin: 12px 0;
-  width: 100%;
-  max-width: 280px;
+.card h3 {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.leaderboard-card h3 {
+  color: white;
+}
+
+.stats-card h3 {
+  color: #333;
+}
+
+.solo-card h3 {
+  color: white;
   font-size: 1.1rem;
-  --border-radius: 12px;
+}
+
+// Bottom Navigation
+ion-footer {
+  --background: #e0e0e0;
+}
+
+.bottom-nav {
+  --background: #e0e0e0;
+  --color: #666;
+}
+
+.nav-container {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  width: 100%;
+  padding: 0.5rem 0;
+}
+
+.nav-button {
+  --color: #666;
+  
+  &:hover {
+    --color: #333;
+  }
 }

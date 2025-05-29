@@ -35,3 +35,23 @@
 /* @import "@ionic/angular/css/palettes/dark.always.css"; */
 /* @import "@ionic/angular/css/palettes/dark.class.css"; */
 @import '@ionic/angular/css/palettes/dark.system.css';
+
+// Global white background
+ion-content {
+  --background: white;
+}
+
+// For the main app background
+ion-app {
+  --background: white;
+}
+
+// Optional: Set the page background as well
+.ion-page {
+  background: white;
+}
+
+:root {
+  --ion-background-color: white;
+  --ion-color-base: white;
+}

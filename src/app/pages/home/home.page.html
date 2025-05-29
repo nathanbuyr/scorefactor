@@ -1,15 +1,94 @@
-<ion-header>
+<ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>ScoreFactor</ion-title>
+    <ion-title class="header-title">ScoreFactor</ion-title>
+    <ion-buttons slot="end">
+      <ion-button fill="clear">
+        <ion-icon name="person-outline" size="large"></ion-icon>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
-<ion-content class="ion-padding">
-  <ion-button expand="block" (click)="connectBluetooth()">
-    {{ connected ? 'Connected' : 'Connect to Bluetooth Device' }}
-  </ion-button>
+<ion-content class="home-content">
+  <div class="home-container">
+    
+    <!-- ESP32 Connection Status -->
+    <div class="connection-section">
+      <div class="connection-status" [class.connected]="isConnected">
+        <span class="status-text">
+          {{ isConnected ? 'Device connected!' : 'Device not connected:' }}
+        </span>
+        <ion-button 
+          size="small" 
+          class="connect-button"
+          [color]="isConnected ? 'success' : 'primary'"
+          (click)="toggleConnection()">
+          {{ isConnected ? 'Connected' : 'Connect' }}
+        </ion-button>
+      </div>
+    </div>
 
-  <ion-button expand="block" color="success" (click)="startBattle()">
-    Start Battle
-  </ion-button>
+    <!-- Main Action Cards -->
+    <div class="cards-container">
+      
+      <!-- Battle Card -->
+      <div class="battle-card main-card" (click)="navigateTo('battle')">
+        <div class="card-content">
+          <div class="card-text">
+            <h2>Battle another opponent!</h2>
+            <ion-button class="action-button" color="secondary">
+              Battle
+            </ion-button>
+          </div>
+          <div class="card-image">
+            <img src="../../../assets/battle.svg" alt="Battle Characters" class="battle-image">
+          </div>
+        </div>
+      </div>
+
+      <!-- Bottom Row Cards -->
+      <div class="bottom-cards">
+        <!-- Leaderboard Card -->
+        <div class="leaderboard-card card" (click)="navigateTo('leaderboard')">
+          <div class="card-content centered">
+            <ion-icon name="trophy" class="card-icon"></ion-icon>
+            <h3>Leaderboard</h3>
+          </div>
+        </div>
+
+        <!-- Stats Card -->
+        <div class="stats-card card" (click)="navigateTo('stats')">
+          <div class="card-content centered">
+            <ion-icon name="bar-chart" class="card-icon"></ion-icon>
+            <h3>Check your stats</h3>
+          </div>
+        </div>
+      </div>
+
+      <!-- Play Solo Card -->
+      <div class="solo-card card" (click)="navigateTo('solo')">
+        <div class="card-content centered">
+          <h3>Play solo</h3>
+        </div>
+      </div>
+
+    </div>
+  </div>
 </ion-content>
+
+<!-- Bottom Navigation -->
+<ion-footer>
+  <ion-toolbar class="bottom-nav">
+    <div class="nav-container">
+      <ion-button fill="clear" class="nav-button" (click)="navigateTo('games')">
+        <ion-icon name="football" size="large"></ion-icon>
+      </ion-button>
+      <ion-button fill="clear" class="nav-button" (click)="navigateTo('battles')">
+        <ion-icon name="fitness" size="large"></ion-icon>
+      </ion-button>
+      <ion-button fill="clear" class="nav-button" (click)="navigateTo('profile')">
+        <ion-icon name="people" size="large"></ion-icon>
+      </ion-button>
+    </div>
+  </ion-toolbar>
+</ion-footer>
