@@ -11,39 +11,50 @@
 
 <ion-content class="home-content">
   <div class="home-container">
-    
+   
     <!-- ESP32 Connection Status -->
-<div class="connection-section">
-  <div class="connection-status" [class.connected]="isConnected">
-    <span class="status-text">
-      {{ isConnected ? 'Connected to: ' + connectedDevice?.name : 'Device not connected' }}
-    </span>
-    <ion-button
-      size="small"
-      class="connect-button"
-      [color]="isConnected ? 'success' : 'primary'"
-      (click)="toggleConnection()">
-      <ion-icon name="bluetooth" slot="start"></ion-icon>
-      {{ isConnected ? 'Disconnect' : 'Connect' }}
-    </ion-button>
-  </div>
-</div>
+    <div class="connection-section">
+      <div class="connection-status" [class.connected]="isConnected">
+        <span class="status-text">
+          {{ isConnected ? 'Connected to: ' + connectedDevice?.name : 'Device not connected' }}
+        </span>
+        <ion-button
+          size="small"
+          class="connect-button"
+          [color]="isConnected ? 'success' : 'primary'"
+          (click)="toggleConnection()">
+          <ion-icon name="bluetooth" slot="start"></ion-icon>
+          {{ isConnected ? 'Disconnect' : 'Connect' }}
+        </ion-button>
+      </div>
+    </div>
 
     <!-- Main Action Cards -->
     <div class="cards-container">
-      
+     
       <!-- Battle Card -->
-      <div class="battle-card main-card" (click)="navigateTo('battle')">
+      <div 
+        class="battle-card main-card" 
+        [class.disabled]="!isConnected"
+        (click)="navigateTo('battle')">
         <div class="card-content">
           <div class="card-text">
             <h2>Battle another opponent!</h2>
-            <ion-button class="action-button" color="secondary">
-              Battle
+            <ion-button 
+              class="action-button" 
+              color="secondary"
+              [disabled]="!isConnected">
+              {{ isConnected ? 'Battle' : 'Connect Device First' }}
             </ion-button>
           </div>
           <div class="card-image">
             <img src="../../../assets/battle.svg" alt="Battle Characters" class="battle-image">
           </div>
+        </div>
+        <!-- Connection required overlay -->
+        <div class="connection-overlay" *ngIf="!isConnected">
+          <ion-icon name="bluetooth" class="overlay-icon"></ion-icon>
+          <span>Device Required</span>
         </div>
       </div>
 
@@ -56,7 +67,7 @@
             <h3>Leaderboard</h3>
           </div>
         </div>
-
+        
         <!-- Stats Card -->
         <div class="stats-card card" (click)="navigateTo('stats')">
           <div class="card-content centered">
@@ -67,12 +78,19 @@
       </div>
 
       <!-- Play Solo Card -->
-      <div class="solo-card card" (click)="navigateTo('solo')">
+      <div 
+        class="solo-card card" 
+        [class.disabled]="!isConnected"
+        (click)="navigateTo('solo')">
         <div class="card-content centered">
-          <h3>Play solo</h3>
+          <h3>{{ isConnected ? 'Play solo' : 'Play solo (Connect Device)' }}</h3>
+        </div>
+        <!-- Connection required overlay -->
+        <div class="connection-overlay" *ngIf="!isConnected">
+          <ion-icon name="bluetooth" class="overlay-icon"></ion-icon>
+          <span>Device Required</span>
         </div>
       </div>
-
     </div>
   </div>
 </ion-content>

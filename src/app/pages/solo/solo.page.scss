@@ -1,0 +1,216 @@
+.solo-content {
+  --background: #f8f9fa;
+}
+
+.solo-container {
+  padding: 1rem;
+  max-width: 500px;
+  margin: 0 auto;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+// Connection Status
+.connection-indicator {
+  text-align: center;
+  padding: 0.5rem 1rem;
+  background: var(--ion-color-danger-tint);
+  color: var(--ion-color-danger);
+  border-radius: 20px;
+  margin-bottom: 1rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  transition: all 0.3s ease;
+
+  &.connected {
+    background: var(--ion-color-success-tint);
+    color: var(--ion-color-success);
+  }
+}
+
+// Game Display Cards
+.game-display {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.time-card, .score-card {
+  margin: 0;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  
+  ion-card-content {
+    padding: 1.5rem;
+    text-align: center;
+  }
+}
+
+.card-header {
+  h2 {
+    margin: 0 0 1rem 0;
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--ion-color-medium);
+    text-decoration: underline;
+    text-underline-offset: 4px;
+    text-decoration-thickness: 2px;
+  }
+}
+
+.time-display, .score-display {
+  font-size: 3rem;
+  font-weight: bold;
+  color: var(--ion-color-dark);
+  font-family: 'SF Mono', 'Monaco', 'Inconsolata', 'Roboto Mono', monospace;
+}
+
+// Game Controls
+.game-controls {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.control-button {
+  --border-radius: 12px;
+  height: 60px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  
+  &[disabled] {
+    opacity: 0.5;
+  }
+}
+
+.reset-button {
+  --border-radius: 8px;
+  height: 44px;
+  font-size: 0.9rem;
+  
+  &[disabled] {
+    opacity: 0.5;
+  }
+}
+
+// Game Status
+.game-status {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 2rem;
+}
+
+.status-indicator {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  background: var(--ion-color-light);
+  border-radius: 20px;
+  transition: all 0.3s ease;
+
+  &.active {
+    background: var(--ion-color-primary-tint);
+    color: var(--ion-color-primary);
+  }
+}
+
+.status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--ion-color-medium);
+  transition: all 0.3s ease;
+
+  .status-indicator.active & {
+    background: var(--ion-color-primary);
+    animation: pulse 2s infinite;
+  }
+}
+
+.status-text {
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+// Instructions
+.instructions {
+  text-align: center;
+  padding: 1rem;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  margin-top: auto;
+
+  h3 {
+    margin: 0 0 1rem 0;
+    color: var(--ion-color-primary);
+    font-size: 1.1rem;
+  }
+
+  p {
+    margin: 0.5rem 0;
+    color: var(--ion-color-medium-shade);
+    font-size: 0.9rem;
+    line-height: 1.4;
+
+    &.warning-text {
+      color: var(--ion-color-warning);
+      font-weight: 500;
+      margin-top: 1rem;
+    }
+  }
+}
+
+// Animations
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+// Mobile Responsiveness
+@media (max-width: 768px) {
+  .solo-container {
+    padding: 0.75rem;
+  }
+
+  .time-display, .score-display {
+    font-size: 2.5rem;
+  }
+
+  .card-header h2 {
+    font-size: 1rem;
+  }
+
+  .control-button {
+    height: 50px;
+    font-size: 1rem;
+  }
+
+  .game-display {
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
+  }
+
+  ion-card-content {
+    padding: 1rem !important;
+  }
+}
+
+// Extra small screens
+@media (max-width: 480px) {
+  .time-display, .score-display {
+    font-size: 2rem;
+  }
+
+  .solo-container {
+    padding: 0.5rem;
+  }
+}

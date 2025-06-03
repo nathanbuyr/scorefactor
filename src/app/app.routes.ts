@@ -21,5 +21,9 @@ export const routes: Routes = [
   {
     path: 'battle',
     loadComponent: () => import('./pages/battle/battle.page').then( m => m.BattlePage)
+  },  {
+    path: 'solo',
+    loadComponent: () => import('./pages/solo/solo.page').then( m => m.SoloPage)
   },
+
 ];

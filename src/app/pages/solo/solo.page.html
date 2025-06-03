@@ -1,0 +1,112 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button fill="clear" (click)="goBack()">
+        <ion-icon name="arrow-back" size="large"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>Solo Game</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="solo-content">
+  <div class="solo-container">
+    
+    <!-- Connection Status -->
+    <div class="connection-indicator" [class.connected]="isConnected">
+      <span class="connection-text">
+        {{ isConnected ? 'Connected' : 'Disconnected' }}
+      </span>
+    </div>
+
+    <!-- Game Display -->
+    <div class="game-display">
+      
+      <!-- Time Card -->
+      <ion-card class="time-card">
+        <ion-card-content>
+          <div class="card-header">
+            <h2>TIME</h2>
+          </div>
+          <div class="time-display">
+            {{ formattedTime }}
+          </div>
+        </ion-card-content>
+      </ion-card>
+
+      <!-- Score Card -->
+      <ion-card class="score-card">
+        <ion-card-content>
+          <div class="card-header">
+            <h2>SCORE</h2>
+          </div>
+          <div class="score-display">
+            {{ gameData.score }}
+          </div>
+        </ion-card-content>
+      </ion-card>
+
+    </div>
+
+    <!-- Game Controls -->
+    <div class="game-controls">
+      
+      <!-- Start/Stop Button -->
+      <ion-button 
+        *ngIf="!gameData.gameActive"
+        expand="block" 
+        size="large" 
+        color="success"
+        class="control-button"
+        [disabled]="!isConnected"
+        (click)="startGame()">
+        <ion-icon name="play" slot="start"></ion-icon>
+        Press to START
+      </ion-button>
+
+      <ion-button 
+        *ngIf="gameData.gameActive"
+        expand="block" 
+        size="large" 
+        color="danger"
+        class="control-button"
+        [disabled]="!isConnected"
+        (click)="stopGame()">
+        <ion-icon name="stop" slot="start"></ion-icon>
+        Stop Game
+      </ion-button>
+
+      <!-- Reset Button -->
+      <ion-button 
+        expand="block" 
+        size="default" 
+        color="medium"
+        fill="outline"
+        class="reset-button"
+        [disabled]="!isConnected"
+        (click)="resetGame()">
+        <ion-icon name="refresh" slot="start"></ion-icon>
+        Reset Game
+      </ion-button>
+
+    </div>
+
+    <!-- Game Status -->
+    <div class="game-status">
+      <div class="status-indicator" [class.active]="gameData.gameActive">
+        <div class="status-dot"></div>
+        <span class="status-text">
+          {{ gameData.gameActive ? 'Game Active' : 'Game Stopped' }}
+        </span>
+      </div>
+    </div>
+
+    <!-- Instructions -->
+    <div class="instructions" *ngIf="!gameData.gameActive">
+      <h3>How to Play</h3>
+      <p>Press the START button to begin your solo game. Your ESP32 device will track your performance and send score updates automatically.</p>
+      <p *ngIf="!isConnected" class="warning-text">⚠️ Connect your ESP32 device to start playing</p>
+    </div>
+
+  </div>
+</ion-content>

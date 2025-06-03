@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { BluetoothService } from './bluetooth.service';
+import { MockESP32Service } from './mock-esp32.service';
 
-describe('BluetoothService', () => {
-  let service: BluetoothService;
+describe('MockESP32Service', () => {
+  let service: MockESP32Service;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(BluetoothService);
+    service = TestBed.inject(MockESP32Service);
   });
 
   it('should be created', () => {
