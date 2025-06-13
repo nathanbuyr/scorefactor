@@ -1,30 +1,263 @@
-<ion-header>
+<ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>Battle</ion-title>
+    <ion-buttons slot="start">
+      <ion-button fill="clear" (click)="goBack()">
+        <ion-icon name="arrow-back" size="large"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>Battle Mode</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
+<ion-content class="battle-content">
+  <div class="battle-container">
+   
+    <!-- Connection Status -->
+    <div class="connection-indicator" [class.connected]="isConnected">
+      <span class="connection-text">
+        {{ isConnected ? 'Connected to Server' : 'Connecting...' }}
+      </span>
+    </div>
 
-  <!-- Start Screen -->
-  <div *ngIf="!hasStarted && !battleOver">
-    <h2>Ready to Battle?</h2>
-    <ion-button expand="block" color="primary" (click)="startBattle()">Start Battle</ion-button>
+    <!-- Setup Phase -->
+    <div *ngIf="gamePhase === 'setup'" class="setup-phase">
+      <div class="setup-header">
+        <ion-icon name="trophy" size="large" color="primary"></ion-icon>
+        <h2>Ready to Battle?</h2>
+        <p>Enter your name to create or join a battle room</p>
+      </div>
+
+      <ion-card class="setup-card">
+        <ion-card-content>
+          <ion-item>
+            <ion-label position="stacked">Your Name</ion-label>
+            <ion-input 
+              [(ngModel)]="playerName" 
+              placeholder="Enter your battle name"
+              maxlength="20">
+            </ion-input>
+          </ion-item>
+
+          <div class="setup-buttons">
+            <ion-button 
+              expand="block" 
+              size="large" 
+              color="primary"
+              [disabled]="!isConnected || !playerName.trim()"
+              (click)="createRoom()">
+              <ion-icon name="wifi" slot="start"></ion-icon>
+              Create Room
+            </ion-button>
+
+            <div class="divider">
+              <span>OR</span>
+            </div>
+
+            <ion-item>
+              <ion-label position="stacked">Room Code</ion-label>
+              <ion-input 
+                [(ngModel)]="roomCode" 
+                placeholder="Enter 6-digit code"
+                maxlength="6">
+              </ion-input>
+            </ion-item>
+
+            <ion-button 
+              expand="block" 
+              size="large" 
+              color="secondary"
+              [disabled]="!isConnected || !playerName.trim() || !roomCode.trim()"
+              (click)="joinRoom()">
+              <ion-icon name="person" slot="start"></ion-icon>
+              Join Room
+            </ion-button>
+          </div>
+        </ion-card-content>
+      </ion-card>
+    </div>
+
+    <!-- Lobby Phase -->
+    <div *ngIf="gamePhase === 'lobby'" class="lobby-phase">
+      <div class="room-info">
+        <h2>Room: {{ gameData.roomId }}</h2>
+        <div class="host-badge" *ngIf="isHost">
+          <ion-icon name="trophy"></ion-icon>
+          <span>Host</span>
+        </div>
+      </div>
+
+      <ion-card class="players-card">
+        <ion-card-content>
+          <div class="card-header">
+            <h3>Players ({{ gameData.players.length }})</h3>
+          </div>
+          
+          <ion-list>
+            <ion-item *ngFor="let player of gameData.players">
+              <ion-icon 
+                name="person" 
+                slot="start" 
+                [color]="player.isHost ? 'primary' : 'medium'">
+              </ion-icon>
+              <ion-label>
+                <h3>{{ player.name }}</h3>
+                <p *ngIf="player.isHost">Host</p>
+              </ion-label>
+              <div slot="end" class="ready-indicator" [class.ready]="player.isReady">
+                {{ player.isReady ? 'Ready' : 'Waiting' }}
+              </div>
+            </ion-item>
+          </ion-list>
+        </ion-card-content>
+      </ion-card>
+
+      <div class="lobby-controls">
+        <ion-button 
+          *ngIf="isHost"
+          expand="block" 
+          size="large" 
+          color="success"
+          [disabled]="gameData.players.length < 2"
+          (click)="startGame()">
+          <ion-icon name="play" slot="start"></ion-icon>
+          Start Battle
+        </ion-button>
+
+        <ion-button 
+          expand="block" 
+          size="default" 
+          color="medium" 
+          fill="outline"
+          (click)="leaveRoom()">
+          Leave Room
+        </ion-button>
+      </div>
+
+      <div class="waiting-message" *ngIf="!isHost">
+        <p>Waiting for host to start the game...</p>
+      </div>
+    </div>
+
+    <!-- Game Phase -->
+    <div *ngIf="gamePhase === 'game'" class="game-phase">
+      <!-- Game Timer -->
+      <ion-card class="time-card">
+        <ion-card-content>
+          <div class="card-header">
+            <h2>TIME</h2>
+          </div>
+          <div class="time-display">
+            {{ formattedTime }}
+          </div>
+        </ion-card-content>
+      </ion-card>
+
+      <!-- Player Scores -->
+      <div class="scores-container">
+        <ion-card 
+          *ngFor="let player of sortedPlayers; let i = index" 
+          class="player-score-card"
+          [class.leader]="i === 0">
+          <ion-card-content>
+            <div class="player-info">
+              <div class="player-name">
+                <ion-icon name="trophy" *ngIf="i === 0" color="warning"></ion-icon>
+                {{ player.name }}
+                <span class="you-badge" *ngIf="player.id === currentPlayer?.id">(You)</span>
+              </div>
+              <div class="player-score">{{ player.score }}</div>
+            </div>
+          </ion-card-content>
+        </ion-card>
+      </div>
+
+      <!-- Game Controls -->
+      <div class="game-controls">
+        <ion-button 
+          expand="block" 
+          size="large" 
+          color="primary"
+          class="score-button"
+          (click)="addScore()">
+          <ion-icon name="add" slot="start"></ion-icon>
+          Add Score
+        </ion-button>
+
+        <ion-button 
+          *ngIf="isHost"
+          expand="block" 
+          size="default" 
+          color="medium" 
+          fill="outline"
+          (click)="resetGame()">
+          <ion-icon name="refresh" slot="start"></ion-icon>
+          Reset Game
+        </ion-button>
+      </div>
+
+      <!-- Game Status -->
+      <div class="game-status">
+        <div class="status-indicator active">
+          <div class="status-dot"></div>
+          <span class="status-text">Battle in Progress</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Finished Phase -->
+    <div *ngIf="gamePhase === 'finished'" class="finished-phase">
+      <div class="winner-announcement">
+        <ion-icon name="trophy" size="large" color="warning"></ion-icon>
+        <h2>{{ gameData.winner }} Wins!</h2>
+      </div>
+
+      <ion-card class="final-scores-card">
+        <ion-card-content>
+          <div class="card-header">
+            <h3>Final Scores</h3>
+          </div>
+          
+          <div class="final-scores">
+            <div 
+              *ngFor="let player of sortedPlayers; let i = index" 
+              class="final-score-item"
+              [class.winner]="i === 0">
+              <div class="position">{{ i + 1 }}</div>
+              <div class="player-name">{{ player.name }}</div>
+              <div class="score">{{ player.score }}</div>
+            </div>
+          </div>
+        </ion-card-content>
+      </ion-card>
+
+      <div class="finished-controls">
+        <ion-button 
+          *ngIf="isHost"
+          expand="block" 
+          size="large" 
+          color="primary"
+          (click)="resetGame()">
+          <ion-icon name="refresh" slot="start"></ion-icon>
+          Play Again
+        </ion-button>
+
+        <ion-button 
+          expand="block" 
+          size="default" 
+          color="medium" 
+          fill="outline"
+          (click)="leaveRoom()">
+          Leave Room
+        </ion-button>
+      </div>
+    </div>
+
+    <!-- Instructions -->
+    <div class="instructions" *ngIf="gamePhase === 'setup'">
+      <h3>How Battle Mode Works</h3>
+      <p>Create a room to host a battle or join someone else's room with their code!</p>
+      <p *ngIf="!isConnected" class="warning-text">Connecting to server...</p>
+    </div>
+
   </div>
-
-  <!-- Battle Screen -->
-  <div *ngIf="hasStarted && !battleOver">
-    <div class="timer">{{ timer }}s</div>
-    <ion-button class="player1" (click)="addScore(1)">Player 1 Score: {{ player1Score }}</ion-button>
-    <ion-button class="player2" (click)="addScore(2)">Player 2 Score: {{ player2Score }}</ion-button>
-  </div>
-
-  <!-- End Screen -->
-  <div *ngIf="battleOver">
-    <h2>Battle Over!</h2>
-    <div class="result">{{ getWinner() }}</div>
-    <ion-button color="medium" (click)="resetBattle()">Back to Start</ion-button>
-    <ion-button color="success" (click)="startBattle()">Battle Again</ion-button>
-  </div>
-
 </ion-content>
