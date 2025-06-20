@@ -103,7 +103,7 @@ export class BattlePage implements OnInit, OnDestroy {
   private connectToServer() {
     try {
       // Replace with your server URL when deployed
-      this.socket = new WebSocket('ws://localhost:3000');
+      this.socket = new WebSocket('ws://192.168.1.3:3000');
       
       this.socket.onopen = () => {
         console.log('Connected to battle server');
